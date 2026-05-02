@@ -6,12 +6,14 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
 
 // mongodb, middlewares, routers
 import { connectDB } from "./config/db.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { rateLimiterMiddleware } from "./middlewares/rateLimiter.middleware.js";
 import router from "./routes/auth.routes.js";
+import "./config/passport.js";
 
 if (cluster.isPrimary) {
   // prod
@@ -48,6 +50,9 @@ if (cluster.isPrimary) {
     }),
   );
 
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   // health
   app.get("/health", (req, res) => {
     res.status(200).json({
@@ -58,7 +63,7 @@ if (cluster.isPrimary) {
   });
 
   // routes
-  app.use("/api", router);
+  app.use("/api/auth", router);
   // global error
   app.use(globalErrorHandler);
 

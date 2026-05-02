@@ -21,11 +21,11 @@ export const generateTokens = (user) => {
     email: user.email,
   };
 
-  const accessToken = jwt.sign(payload, env.jwtSecret, {
+  const accessToken = jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: "30m",
   });
 
-  const refreshToken = jwt.sign(payload, env.jwtSecret, {
+  const refreshToken = jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: "30d",
   });
 
@@ -34,7 +34,7 @@ export const generateTokens = (user) => {
 
 export const verifyToken = (token) => {
   try {
-    return jwt.verify(token, env.jwtSecret);
+    return jwt.verify(token, env.JWT_SECRET);
   } catch (error) {
     return null;
   }

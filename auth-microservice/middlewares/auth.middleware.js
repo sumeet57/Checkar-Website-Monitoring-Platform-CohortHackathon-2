@@ -19,7 +19,6 @@ export const authenticateToken = (req, res, next) => {
       const decodedAccess = verifyToken(accessToken);
       if (decodedAccess) {
         req.userId = decodedAccess.id;
-        console.log("Access token valid. User ID:", decodedAccess);
         return next();
       }
     }

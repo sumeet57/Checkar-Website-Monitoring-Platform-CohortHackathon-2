@@ -10,6 +10,12 @@ import {
 } from "../controllers/user.controller.js";
 import { authenticateToken } from "../middlewares/auth.middleware.js";
 
+import {
+  validateLogin,
+  validateRegister,
+  validateUpdateProfile,
+} from "../middlewares/validate.middleware.js";
+
 
 const router = Router();
 
@@ -24,9 +30,9 @@ router.get(
   googleAuthCallback,
 );
 
-router.post("/register", manualRegister);
-router.post("/login", manualLogin);
-router.post("/update", authenticateToken,  updateProfile);
+router.post("/register", validateRegister,manualRegister);
+router.post("/login", validateLogin,manualLogin);
+router.post("/update", validateUpdateProfile ,authenticateToken,  updateProfile);
 router.get("/profile", authenticateToken, getProfile);
 router.post("/logout", authenticateToken, logout);
 

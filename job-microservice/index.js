@@ -11,7 +11,7 @@ import MongoStore from "connect-mongo";
 import { connectDB } from "./config/db.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { rateLimiterMiddleware } from "./middlewares/rateLimiter.middleware.js";
-import router from "./routes/auth.routes.js";
+import router from "./routes/job.routes.js";
 
 if (cluster.isPrimary) {
   // prod
@@ -27,7 +27,12 @@ if (cluster.isPrimary) {
   connectDB();
 
   app.set("trust proxy", 1);
-  app.use(cors({ origin: env.clientUrl, credentials: true }));
+  app.use(cors({
+  origin: env.clientUrl,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
   app.use(express.json());
   app.use(cookieParser());
   app.use(rateLimiterMiddleware);
@@ -58,7 +63,7 @@ if (cluster.isPrimary) {
   });
 
   // routes
-  app.use("/api", router);
+  app.use("/api/job", router);
   // global error
   app.use(globalErrorHandler);
 

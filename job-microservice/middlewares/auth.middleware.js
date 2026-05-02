@@ -19,7 +19,6 @@ export const authenticateToken = (req, res, next) => {
       const decodedAccess = verifyToken(accessToken);
       if (decodedAccess) {
         req.userId = decodedAccess.id;
-        console.log("Access token valid. User ID:", decodedAccess);
         return next();
       }
     }
@@ -29,15 +28,17 @@ export const authenticateToken = (req, res, next) => {
       const decodedRefresh = verifyToken(refreshToken);
       if (decodedRefresh) {
         // Regenerate both to maintain security (Rotating Refresh Tokens)
-        const tokens = generateTokens(decodedRefresh);
+
+        const u = {
+          _id  : decodedRefresh.id,
+          email : decodedRefresh.email
+        }
+        const tokens = generateTokens(u);
 
         setAccessCookie(res, tokens.accessToken);
         setRefreshCookie(res, tokens.refreshToken);
 
         req.userId = decodedRefresh.id;
-
-        console.log("Access token refreshed successfully");
-        console.log("New Access Token:", req.userId);
         return next();
       }
     }

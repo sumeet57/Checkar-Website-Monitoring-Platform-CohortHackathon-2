@@ -1,73 +1,16 @@
-import cluster from "node:cluster";
-import os from "node:os";
-import env from "./config/env.js";
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import session from "express-session";
-import MongoStore from "connect-mongo";
+import { connectDB } from './config/db.js';
+import { runSchedulerTick } from './controllers/scheduler.controller.js';
+import env from './config/env.js';
 
-// mongodb, middlewares, routers
-import { connectDB } from "./config/db.js";
-import { globalErrorHandler } from "./middlewares/error.middleware.js";
-import { rateLimiterMiddleware } from "./middlewares/rateLimiter.middleware.js";
-import router from "./routes/auth.routes.js";
+// Connect to Database
+connectDB();
 
-if (cluster.isPrimary) {
-  // prod
-  // const numCPUs = os.cpus().length;
+// Scheduler Loop: Runs every 10 seconds
+// You can adjust this based on how fast your Redis queue clears
+const TICK_INTERVAL = 10000; 
 
-  // dev
-  const numCPUs = 1;
-  for (let i = 0; i < numCPUs; i++) cluster.fork();
-  cluster.on("exit", () => cluster.fork());
-} else {
-  const app = express();
+console.log("⏱️ Scheduler Microservice started...");
 
-  connectDB();
-
-  app.set("trust proxy", 1);
-  app.use(cors({ origin: env.clientUrl, credentials: true }));
-  app.use(express.json());
-  app.use(cookieParser());
-  app.use(rateLimiterMiddleware);
-
-  app.use(
-    session({
-      secret: env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      store: MongoStore.create({
-        mongoUrl: env.DB_URI,
-      }),
-      cookie: {
-        secure: env.NODE === "production",
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,
-      },
-    }),
-  );
-
-  // health
-  app.get("/health", (req, res) => {
-    res.status(200).json({
-      status: "OK",
-      uptime: process.uptime(),
-      timestamp: new Date().toISOString(),
-    });
-  });
-
-  // routes
-  app.use("/api", router);
-  // global error
-  app.use(globalErrorHandler);
-
-  const PORT = env.PORT;
-  if (!PORT) {
-    throw new Error("PORT is not defined in environment variables");
-    process.exit(1);
-  }
-  app.listen(PORT, () =>
-    console.log(`Worker ${process.pid} running on port ${PORT}`),
-  );
-}
+setInterval(async () => {
+  await runSchedulerTick();
+}, TICK_INTERVAL);

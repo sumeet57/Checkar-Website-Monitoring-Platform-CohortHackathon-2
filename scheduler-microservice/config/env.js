@@ -25,6 +25,7 @@ export default {
   PORT: process.env.PORT,
   JWT_SECRET: process.env.JWT_SECRET,
   DB_URI: process.env.DB_URI,
+  REDIS_URL: process.env.REDIS_URL,
   clientUrl: process.env.CLIENT,
   SESSION_SECRET: process.env.SESSION_SECRET,
 };

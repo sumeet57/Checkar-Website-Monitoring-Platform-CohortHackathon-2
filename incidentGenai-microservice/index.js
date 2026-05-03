@@ -67,7 +67,7 @@ if (cluster.isPrimary) {
     throw new Error("PORT is not defined in environment variables");
     process.exit(1);
   }
-  app.listen(PORT, () =>
+  app.listen(PORT, "0.0.0.0", () =>
     console.log(`Worker ${process.pid} running on port ${PORT}`),
   );
 }

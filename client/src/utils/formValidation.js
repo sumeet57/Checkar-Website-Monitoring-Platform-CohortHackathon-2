@@ -91,7 +91,12 @@ export const validateLoginForm = (formData) => {
 export const validateRegisterForm = (formData, options = {}) => {
     const errors = {}
 
-    errors.name = validateName(formData.name)
+    if (formData.firstName !== undefined || formData.lastName !== undefined) {
+        errors.firstName = validateName(formData.firstName)
+        errors.lastName = validateName(formData.lastName)
+    } else {
+        errors.name = validateName(formData.name)
+    }
     errors.email = validateEmail(formData.email)
     errors.password = validatePassword(formData.password, options)
     errors.confirmPassword = validatePasswordMatch(formData.password, formData.confirmPassword)

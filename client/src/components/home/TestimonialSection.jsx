@@ -1,5 +1,4 @@
-import React from 'react'
-import {testimonials} from "@/assets/data.jsx";
+import {testimonials} from "../../assets/data.jsx";
 
 const TestimonialSection = () => {
     const columns = [
@@ -15,7 +14,7 @@ const TestimonialSection = () => {
                      hover:-translate-y-1 transition-all duration-500 cursor-default
                      /* Premium Fading Border Effect */
                      before:absolute before:inset-0 before:rounded-card before:p-[1.5px]
-                     before:bg-gradient-to-b before:from-primary/30 before:via-primary/8 before:via-25% before:to-transparent
+                     before:bg-linear-to-b before:from-primary/30 before:via-primary/8 before:via-25% before:to-transparent
                      before:opacity-20 hover:before:opacity-70
                      before:transition-opacity before:duration-500 before:pointer-events-none
                      /* Inner Highlight */
@@ -24,8 +23,8 @@ const TestimonialSection = () => {
         >
             {/* Subtle Corner Glows */}
             <div className="absolute -inset-px rounded-card opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                <div className="absolute top-0 left-0 w-10 h-10 bg-gradient-to-br from-primary/12 to-transparent rounded-tl-card blur-lg" />
-                <div className="absolute bottom-0 right-0 w-10 h-10 bg-gradient-to-tl from-primary/8 to-transparent rounded-br-card blur-lg" />
+                <div className="absolute top-0 left-0 w-10 h-10 bg-linear-to-br from-primary/12 to-transparent rounded-tl-card blur-lg" />
+                <div className="absolute bottom-0 right-0 w-10 h-10 bg-linear-to-tl from-primary/8 to-transparent rounded-br-card blur-lg" />
             </div>
 
             {/* Quote Icon - Orange Primary */}
@@ -107,10 +106,10 @@ const TestimonialSection = () => {
                 {/* Scrolling Testimonials Grid */}
                 <div className="relative w-full max-w-6xl overflow-hidden">
                     {/* Fade Masks - Dark Base */}
-                    <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-bg-base to-transparent z-10 pointer-events-none"></div>
-                    <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-bg-base to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute top-0 left-0 right-0 h-24 bg-linear-to-b from-bg-base to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-bg-base to-transparent z-10 pointer-events-none"></div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-[640px] overflow-hidden">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-160 overflow-hidden">
                         {columns.map((col, colIndex) => (
                             <div key={colIndex} className={col.className}>
                                 {[...testimonials.slice(col.start, col.end), ...testimonials.slice(col.start, col.end)].map((testimonial, index) =>

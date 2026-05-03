@@ -1,12 +1,12 @@
-import React from 'react'
+
 import { Link } from 'react-router-dom'
-import {legalLinks, navColumns, socialLinks} from "@/assets/data.jsx";
+import {legalLinks, navColumns, socialLinks} from "../../assets/data.jsx";
 
 const Footer = () => {
     return (
         <>
             <footer className="bg-bg-base pt-20 px-4">
-                <div className="bg-bg-base/60 w-full max-w-[1350px] mx-auto text-text-primary pt-8 lg:pt-12 px-4 sm:px-8 md:px-16 lg:px-28 rounded-tl-3xl rounded-tr-3xl overflow-hidden border-t border-bg-border">
+                <div className="bg-bg-base/60 w-full max-w-337.5 mx-auto text-text-primary pt-8 lg:pt-12 px-4 sm:px-8 md:px-16 lg:px-28 rounded-tl-3xl rounded-tr-3xl overflow-hidden border-t border-bg-border">
 
                     <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-6 gap-8 md:gap-12">
 

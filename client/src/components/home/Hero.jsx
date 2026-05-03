@@ -16,7 +16,7 @@ const Hero = () => {
         <>
             <header className="relative flex flex-col items-center bg-bg-base text-text-primary px-4 overflow-hidden">
 
-                <nav className="mx-auto z-50 flex w-full max-w-[1240px] items-center justify-between py-4 md:px-6 lg:px-10 backdrop-blur">
+                <nav className="mx-auto z-50 flex w-full max-w-310 items-center justify-between py-4 md:px-6 lg:px-10 backdrop-blur">
 
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 group">
@@ -99,7 +99,7 @@ const Hero = () => {
                 </h1>
 
                 {/* Subheadline - Clear Value Prop */}
-                <p className="text-center text-text-muted text-base md:text-lg max-w-[680px] mt-4 leading-relaxed">
+                <p className="text-center text-text-muted text-base md:text-lg max-w-170 mt-4 leading-relaxed">
                     Real-time monitoring for APIs, servers, ports, SSL & frontend apps.
                     Detect downtime, group related failures, and get AI-powered incident summaries
                     that actually help you debug faster.
@@ -125,8 +125,8 @@ const Hero = () => {
                             {/* Animated Background Glow */}
                             <div className="
     absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-    w-[110%] h-[110%] max-h-[400px]
-    bg-gradient-to-br from-primary/20 via-primary/5 to-transparent
+    w-[110%] h-[110%] max-h-100
+    bg-linear-to-br from-primary/20 via-primary/5 to-transparent
     blur-[80px] opacity-60 z-0
     animate-pulse-slow
     pointer-events-none
@@ -151,7 +151,7 @@ const Hero = () => {
                         </div>
 
                         {/* Bottom Fade Overlay */}
-                        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-bg-base to-transparent z-10 pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-bg-base to-transparent z-10 pointer-events-none"></div>
 
                         {/* Floating Status Card - Demo Teaser - Responsive + Orange Palette */}
                         <div className="hidden

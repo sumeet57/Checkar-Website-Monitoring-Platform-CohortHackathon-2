@@ -1,6 +1,5 @@
 
 import {RiDiscordFill, RiGithubFill, RiLinkedinBoxFill, RiTwitterXFill} from "@remixicon/react";
-import React from "react";
 
 
 export const testimonials = [

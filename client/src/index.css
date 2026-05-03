@@ -4,6 +4,17 @@
 * { font-family: "Inter", sans-serif; }
 code, .mono { font-family: "JetBrains Mono", monospace; }
 
+html {
+    scroll-behavior: smooth;
+    background: #020617;
+}
+
+body {
+    margin: 0;
+    background: #020617;
+    color: #f8fafc;
+}
+
 @theme {
     /* Primary Brand Colors - Orange Focus */
     --color-orange-50: #fff7ed;
@@ -61,19 +72,6 @@ code, .mono { font-family: "JetBrains Mono", monospace; }
     /* Box Shadows */
     --shadow-glow-orange: 0 0 20px rgba(251, 146, 60, 0.25);
     --shadow-glow-ai: 0 0 20px rgba(6, 182, 212, 0.2);
-}
-
-/* Base Styles */
-* {
-    font-family: "Inter", sans-serif;
-}
-code, .mono {
-    font-family: "JetBrains Mono", monospace;
-}
-
-/* Smooth Scrolling */
-html {
-    scroll-behavior: smooth;
 }
 
 /* Selection Color */

@@ -1,5 +1,5 @@
 import React from 'react'
-import {featuresData} from "@/assets/data.jsx";
+import {featuresData} from "../../assets/data.jsx";
 
 const FeatureSection = () => {
     return (
@@ -25,7 +25,7 @@ const FeatureSection = () => {
                      hover:-translate-y-1 transition-all duration-500 cursor-default
                      /* Fading Gradient Border - Subtle Top Focus */
                      before:absolute before:inset-0 before:rounded-card before:p-[1.5px]
-                     before:bg-gradient-to-b before:from-primary/30 before:via-primary/8 before:via-25% before:to-transparent
+                     before:bg-linear-to-b before:from-primary/30 before:via-primary/8 before:via-25% before:to-transparent
                      before:opacity-20 hover:before:opacity-70
                      before:transition-opacity before:duration-500 before:pointer-events-none
                      /* Inner Highlight for Depth */
@@ -34,13 +34,13 @@ const FeatureSection = () => {
                         >
                             {/* Subtle Corner Glows - Reduced Size & Opacity */}
                             <div className="absolute -inset-px rounded-card opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                                <div className="absolute top-0 left-0 w-10 h-10 bg-gradient-to-br from-primary/12 to-transparent rounded-tl-card blur-lg" />
-                                <div className="absolute bottom-0 right-0 w-10 h-10 bg-gradient-to-tl from-primary/8 to-transparent rounded-br-card blur-lg" />
+                                <div className="absolute top-0 left-0 w-10 h-10 bg-linear-to-br from-primary/12 to-transparent rounded-tl-card blur-lg" />
+                                <div className="absolute bottom-0 right-0 w-10 h-10 bg-linear-to-tl from-primary/8 to-transparent rounded-br-card blur-lg" />
                             </div>
 
                             {/* Icon Container - Darker Base, Subtle Hover */}
                             <div className="relative flex items-center justify-center w-12 h-12 rounded-lg
-                          bg-bg-elevated border border-white/[0.03]
+                          bg-bg-elevated border border-white/3
                           group-hover:border-primary/15
                           group-hover:shadow-[0_0_15px_-6px_rgba(251,146,60,0.06)]
                           transition-all duration-500">

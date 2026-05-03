@@ -27,4 +27,5 @@ export default {
   DB_URI: process.env.DB_URI,
   clientUrl: process.env.CLIENT,
   SESSION_SECRET: process.env.SESSION_SECRET,
+  GEMINI_API_KEY:process.env.GEMINI_API_KEY
 };

@@ -11,6 +11,8 @@
     "start": "nodemon index.js"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.16.0",
     "connect-mongo": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",

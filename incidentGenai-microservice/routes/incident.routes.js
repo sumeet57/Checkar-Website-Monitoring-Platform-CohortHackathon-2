@@ -1,8 +1,8 @@
 import express from 'express';
-import { handleIncidentTrigger, triggerIncident } from '../controllers/incident.controller.js';
+import { handleIncidentTrigger} from '../controllers/incident.controller.js';
 
 const router = express.Router();
 
-router.post('/trigger', handleIncidentTrigger);
+router.post("/trigger", handleIncidentTrigger);
 
 export default router;

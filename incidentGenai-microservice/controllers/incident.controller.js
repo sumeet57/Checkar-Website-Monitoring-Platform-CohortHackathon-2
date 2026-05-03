@@ -49,3 +49,80 @@ export const handleIncidentTrigger = async (req, res) => {
     res.status(500).json({ error: "Failed to process trigger" });
   }
 };
+
+
+export const getIncidents = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    const { jobId, status, page = 1, limit = 10 } = req.query;
+
+    const query = { userId };
+    if (jobId) query.jobId = jobId;
+    if (status) query.status = status;
+
+    const incidents = await Incident.find(query)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .populate('jobId', 'name url');
+
+    const total = await Incident.countDocuments(query);
+
+    res.status(200).json({
+      success: true,
+      total,
+      page: Number(page),
+      totalPages: Math.ceil(total / limit),
+      incidents
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getIncidentById = async (req, res, next) => {
+  try {
+    const { incidentId } = req.params;
+    const userId = req.userId;
+
+    const incident = await Incident.findOne({ _id: incidentId, userId })
+      .populate('jobId');
+
+    if (!incident) {
+      return res.status(404).json({
+        success: false,
+        message: "Incident not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      incident
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getIncidentStats = async (req, res, next) => {
+  try {
+   const userId = req.userId;
+
+    const stats = await Incident.aggregate([
+      { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    res.status(200).json({
+      success: true,
+      stats
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -8,13 +8,11 @@ html {
     scroll-behavior: smooth;
     background: #020617;
 }
-
 body {
     margin: 0;
     background: #020617;
     color: #f8fafc;
 }
-
 @theme {
     /* Primary Brand Colors - Orange Focus */
     --color-orange-50: #fff7ed;

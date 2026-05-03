@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
 
 
 export const analyzeIncident = async (jobType, logs) => {
-  const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite-001" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = `
     You are an expert SRE. Analyze this monitoring failure for a ${jobType} check.
@@ -22,19 +22,30 @@ export const analyzeIncident = async (jobType, logs) => {
   const result = await model.generateContent(prompt);
   const response = await result.response;
   
-  // 1. Get the raw text
   let rawText = response.text().trim();
 
-  // 2. Clean Markdown backticks if they exist
   if (rawText.startsWith("```")) {
     rawText = rawText.replace(/^```json|```$/g, "").trim();
   }
 
   try {
-    return JSON.parse(rawText);
+    const parsedData = JSON.parse(rawText);
+
+    const formatField = (field) => {
+      if (Array.isArray(field)) {
+        return field.join(" ");
+      }
+      return field;
+    };
+
+    return {
+      summary: formatField(parsedData.summary),
+      rootCause: formatField(parsedData.rootCause),
+      suggestedFix: formatField(parsedData.suggestedFix)
+    };
+
   } catch (parseError) {
     console.error("Gemini JSON Parsing Failed. Raw text was:", rawText);
-    // Fallback object so your controller doesn't crash
     return {
       summary: "Failed to parse AI report",
       rootCause: "AI response was not in valid JSON format",

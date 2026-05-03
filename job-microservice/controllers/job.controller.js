@@ -88,8 +88,9 @@ export const getAllJobs = async (req, res) => {
 
 export const updateJobStat = async (req, res) => {
   try {
+const {id} = req.params;
     const updatedJob = await jobService.updateJobStatService(
-      req.params.id,
+      id,
       req.body,
     );
     if (!updatedJob)
@@ -108,9 +109,7 @@ export const getJobLogs = async (req, res) => {
 
     // Safety check: ensure user owns the job before showing logs
     const {id} = req.params;
-    console.log(id)
     const job = await jobService.getJobByIdService(id, req.userId);
-    console.log(job)
     if (!job) return errorResponse(res, 400 ,"Job not found or unauthorized");
 
     const logs = await jobService.getJobLogsService(req.params.id, page, limit);

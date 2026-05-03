@@ -129,3 +129,25 @@ export const updateJobService = async (jobId, userId, updateData) => {
     { returnDocument: "after", runValidators: true }
   ).lean();
 };
+
+
+// Optimized for the Scheduler Microservice
+export const getDueJobsService = async () => {
+  const now = new Date();
+  return await Job.find({
+    isActive: true,
+    $or: [
+      { lastCheck: { $exists: false } },
+      { 
+        $expr: {
+          $lte: [
+            { $add: ["$lastCheck", { $multiply: ["$interval", 1000] }] },
+            now
+          ]
+        }
+      }
+    ]
+  })
+  .select("_id url type interval lastCheck host port expectations userId") // Only what worker needs
+  .lean();
+};

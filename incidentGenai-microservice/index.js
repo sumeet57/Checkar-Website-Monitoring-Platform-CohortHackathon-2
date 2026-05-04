@@ -12,6 +12,7 @@ import { connectDB } from "./config/db.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { rateLimiterMiddleware } from "./middlewares/rateLimiter.middleware.js";
 import router from "./routes/incident.routes.js";
+import Notirouter from "./routes/notification.routes.js"
 
 if (cluster.isPrimary) {
   // prod
@@ -59,6 +60,7 @@ if (cluster.isPrimary) {
 
   // routes
   app.use("/api/incident", router);
+  app.use("/api/notification", Notirouter);
   // global error
   app.use(globalErrorHandler);
 

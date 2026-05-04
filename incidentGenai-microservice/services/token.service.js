@@ -3,16 +3,18 @@ import env from "../config/env.js";
 
 export const cookieOptionsAccess = {
   httpOnly: true,
-  secure: env.NODE === "production",
+  secure: true,
   maxAge: 30 * 60 * 1000,
-  sameSite: env.NODE === "production" ? "Strict" : "None",
+  sameSite: "none",
+  domain: ".sumeet.app",
 };
 
 export const cookieOptionsRefresh = {
   httpOnly: true,
-  secure: env.NODE === "production",
+  secure: true,
   maxAge: 30 * 24 * 60 * 60 * 1000,
-  sameSite: env.NODE === "production" ? "Strict" : "None",
+  sameSite: "none",
+  domain: ".sumeet.app",
 };
 
 export const generateTokens = (user) => {
@@ -21,11 +23,11 @@ export const generateTokens = (user) => {
     email: user.email,
   };
 
-  const accessToken = jwt.sign(payload, env.jwtSecret, {
+  const accessToken = jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: "30m",
   });
 
-  const refreshToken = jwt.sign(payload, env.jwtSecret, {
+  const refreshToken = jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: "30d",
   });
 
@@ -34,7 +36,7 @@ export const generateTokens = (user) => {
 
 export const verifyToken = (token) => {
   try {
-    return jwt.verify(token, env.jwtSecret);
+    return jwt.verify(token, env.JWT_SECRET);
   } catch (error) {
     return null;
   }

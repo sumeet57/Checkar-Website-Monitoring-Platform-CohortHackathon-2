@@ -1,8 +1,10 @@
 import express from 'express';
-import { handleIncidentTrigger} from '../controllers/incident.controller.js';
-
+import { handleIncidentTrigger, getIncidents,getIncidentById,getIncidentStats} from '../controllers/incident.controller.js';
+import { authenticateToken } from '../middlewares/auth.middleware.js';
 const router = express.Router();
-
+router.use(authenticateToken);
 router.post("/trigger", handleIncidentTrigger);
-
+router.get("/", getIncidents);
+router.get("/stats", getIncidentStats);
+router.get("/:Id", getIncidentById);
 export default router;

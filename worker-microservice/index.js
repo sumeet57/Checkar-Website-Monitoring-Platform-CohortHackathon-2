@@ -1,73 +1,43 @@
-import cluster from "node:cluster";
-import os from "node:os";
-import env from "./config/env.js";
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import session from "express-session";
-import MongoStore from "connect-mongo";
+import Redis from 'ioredis';
+import dotenv from 'dotenv';
+import { executeCheck } from './services/worker.service.js';
 
-// mongodb, middlewares, routers
-import { connectDB } from "./config/db.js";
-import { globalErrorHandler } from "./middlewares/error.middleware.js";
-import { rateLimiterMiddleware } from "./middlewares/rateLimiter.middleware.js";
-import router from "./routes/auth.routes.js";
+dotenv.config();
 
-if (cluster.isPrimary) {
-  // prod
-  // const numCPUs = os.cpus().length;
-
-  // dev
-  const numCPUs = 1;
-  for (let i = 0; i < numCPUs; i++) cluster.fork();
-  cluster.on("exit", () => cluster.fork());
-} else {
-  const app = express();
-
-  connectDB();
-
-  app.set("trust proxy", 1);
-  app.use(cors({ origin: env.clientUrl, credentials: true }));
-  app.use(express.json());
-  app.use(cookieParser());
-  app.use(rateLimiterMiddleware);
-
-  app.use(
-    session({
-      secret: env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      store: MongoStore.create({
-        mongoUrl: env.DB_URI,
-      }),
-      cookie: {
-        secure: env.NODE === "production",
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,
-      },
-    }),
-  );
-
-  // health
-  app.get("/health", (req, res) => {
-    res.status(200).json({
-      status: "OK",
-      uptime: process.uptime(),
-      timestamp: new Date().toISOString(),
-    });
-  });
-
-  // routes
-  app.use("/api", router);
-  // global error
-  app.use(globalErrorHandler);
-
-  const PORT = env.PORT;
-  if (!PORT) {
-    throw new Error("PORT is not defined in environment variables");
-    process.exit(1);
+const redis = new Redis({
+  host: env.REDIS_HOST,
+  port: env.REDIS_PORT,
+  password: env.REDIS_PASSWORD,
+  retryStrategy: (times) => {
+    return Math.min(times * 50, 2000);
   }
-  app.listen(PORT, () =>
-    console.log(`Worker ${process.pid} running on port ${PORT}`),
-  );
-}
+});
+
+redis.on("connect", () => console.log("✅ Scheduler: Redis Connected"));
+redis.on("error", (err) => console.error("❌ Redis Error:", err.message));
+const QUEUE_NAME = 'task-queue';
+
+const startWorker = async () => {
+  console.log("🚀 Worker is online and waiting for tasks...");
+
+  while (true) {
+    try {
+      // BRPOP blocks the loop until a task is available (efficient!)
+      const task = await redis.brpop(QUEUE_NAME, 0); 
+      
+      if (task) {
+        const jobData = JSON.parse(task[1]);
+        console.log(`Checking [${jobData.type}]: ${jobData.url || jobData.host}`);
+        
+        // Execute the check (API, SSL, Port, or Frontend)
+        await executeCheck(jobData);
+      }
+    } catch (error) {
+      console.error("Worker Loop Error:", error.message);
+      // Small delay to prevent infinite rapid crashing
+      await new Promise(res => setTimeout(res, 5000));
+    }
+  }
+};
+
+startWorker();

@@ -1,19 +1,26 @@
-import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
+// src/layouts/DashboardLayout.jsx
+import { useState } from "react"
+import { Outlet } from "react-router-dom"
+import Sidebar from "./Sidebar"
+import TopBar from "./TopBar"
 
 const DashboardLayout = () => {
-	return (
-		<div className="flex min-h-screen w-full bg-[#020617] text-[#f8fafc]">
-			<Sidebar />
-			<div className="flex flex-1 flex-col overflow-hidden lg:ml-70">
-				<Topbar />
-				<main className="flex-1 overflow-y-auto">
-					<Outlet />
-				</main>
-			</div>
-		</div>
-	);
-};
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
-export default DashboardLayout;
+  return (
+    <div className="min-h-screen bg-bg-base">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      
+      {/* TopBar with toggle handler */}
+      <TopBar onMenuToggle={() => setSidebarOpen(true)} />
+      
+      {/* Main Content */}
+      <main className="lg:ml-70 min-h-screen">
+        <Outlet />
+      </main>
+    </div>
+  )
+}
+
+export default DashboardLayout

@@ -14,12 +14,12 @@ const Footer = () => {
                         <div className="lg:col-span-3 space-y-6">
                             {/* Logo - Premium Hover */}
                             <Link to="/" className="flex items-center gap-2 group">
-                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:scale-105 transition-transform">
-                                    <path d="M8 11.3l6.75 3.884 6.75-3.885M8 34.58v-7.755L1.25 22.94m27 0-6.75 3.885v7.754" stroke="currentColor" className="text-primary" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M1.655 15.408l13.095 7.546 13.095-7.546M14.75 38V22.939" stroke="currentColor" className="text-primary" strokeWidth="2" strokeLinecap="round"/>
-                                </svg>
-                                <span className="font-semibold text-lg text-text-primary group-hover:text-primary transition-colors">Checker</span>
-                            </Link>
+                                       <img
+                                         src="/logo.png"
+                                         alt="Checker Logo"
+                                         className="h-14 w-auto group-hover:opacity-90 transition-opacity"
+                                       />
+                                     </Link>
 
                             {/* Tagline */}
                             <p className="text-sm/6 text-text-muted max-w-96">
@@ -92,7 +92,7 @@ const Footer = () => {
                     <div className="relative mt-8">
                         <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-3xl h-full max-h-64 bg-primary/10 rounded-full blur-[170px] pointer-events-none"/>
                         <h3 className="text-center font-extrabold leading-[0.7] text-transparent text-[clamp(3rem,15vw,15rem)] [-webkit-text-stroke:1px_rgba(251,146,60,0.3)] mt-6 select-none">
-                            CHECKER
+                            CHECKAR
                         </h3>
                     </div>
 

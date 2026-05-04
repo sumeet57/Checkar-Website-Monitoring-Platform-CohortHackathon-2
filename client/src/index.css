@@ -77,3 +77,6 @@ body {
     background: var(--color-primary);
     color: var(--color-text-inverse);
 }
+::-webkit-scrollbar {
+  display: none;
+}
